@@ -22,6 +22,24 @@ const UserServices = {
         })
         return allUserInformationWithoutPassword;
     },
+    findUserByUsername: async (username: string) => {
+        const user = await UserRepository.findByUsername(username);
+        if (!user) return null;
+        const {password, ...allUserInformationWithoutPassword} = user
+        return allUserInformationWithoutPassword;
+    },
+    findUserByEmail: async (email: string) => {
+        const user = await UserRepository.findByEmail(email);
+        if (!user) return null;
+        const {password, ...allUserInformationWithoutPassword} = user
+        return allUserInformationWithoutPassword;
+    },
+    findByUsernameOrEmail: async (identifier: string) => {
+        const user = await UserRepository.findByUsernameOrEmail(identifier);
+        if (!user) return null;
+        const {password, ...allUserInformationWithoutPassword} = user
+        return allUserInformationWithoutPassword;
+    },
 }
 
 export default UserServices;
