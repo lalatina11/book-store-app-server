@@ -10,7 +10,13 @@ const UserServices = {
         }
         const password = hashSync(passwordFromInput, 10);
         const avatar = "https://api.dicebear.com/9.x/adventurer/svg?seed=" + username;
-        return await UserRepository.create({username, email, password, avatar});
+        const {password: pass, ...allUserInformationWithoutPassword} = await UserRepository.create({
+            username,
+            email,
+            password,
+            avatar
+        })
+        return allUserInformationWithoutPassword;
     },
 }
 

@@ -5,6 +5,7 @@ import AuthService from "../services/AuthServices.ts";
 
 import emailValidator from "email-validator"
 import UserServices from "../services/UserServices.ts";
+import UserRepository from "../repositories/UserRepository.ts";
 
 const UserController = {
     getCurrentUser: async (req: Request, res: Response,) => {
@@ -41,25 +42,25 @@ const UserController = {
             if (!password || password.trim().length < 6) {
                 throw new Error("Password must be at least 6 characters or more!");
             }
-            const usedUsername = await User.findOne({username})
+            const usedUsername = await UserRepository.findByUsername(username);
 
             if (usedUsername) {
                 throw new Error("Username is already in use!");
             }
-            const existingEmail = await User.findOne({email})
+            const existingEmail = await UserRepository.findByEmail(email);
             if (existingEmail) {
                 throw new Error("Email is already in use!");
             }
 
-            const {password: pass, ...allUserInfoWithoutPassword} = await UserServices.create({
+            const user = await UserServices.create({
                 username,
                 email,
                 password
             });
-            const token = AuthService.generateToken(allUserInfoWithoutPassword._id.toString());
+            const token = AuthService.generateToken(user._id.toString());
             return res.status(200).json({
                 error: false,
-                data: {user: allUserInfoWithoutPassword, token},
+                data: {user, token},
                 message: "Successfully SignUp User"
             })
         } catch
