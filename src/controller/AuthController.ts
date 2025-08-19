@@ -1,6 +1,5 @@
 import type {Request, Response} from "express";
 import type {UserFields} from "../types";
-import User from "../db/models/User.ts";
 import AuthService from "../services/AuthServices.ts";
 
 import emailValidator from "email-validator"
