@@ -8,6 +8,10 @@ const UserServices = {
         if (!passwordFromInput) {
             throw new Error("Password is required!");
         }
+        const regexPassword = /^(?=.*\d)(?=.*[!@#$%^&*])/;
+        if (!regexPassword.test(passwordFromInput)) {
+            throw new Error("Password must have at least one number and one special character!");
+        }
         const password = hashSync(passwordFromInput, 10);
         const avatar = "https://api.dicebear.com/9.x/adventurer/svg?seed=" + username;
         const {password: pass, ...allUserInformationWithoutPassword} = await UserRepository.create({
