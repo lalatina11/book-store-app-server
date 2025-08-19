@@ -4,6 +4,7 @@ import type {Response} from "express"
 import express from "express"
 import cors from "cors"
 import AuthRouter from "./router/AuthRouter.ts";
+import {DbConnection} from "./db";
 
 const allowedOrigin = ["http://localhost:8081"]
 
@@ -27,5 +28,6 @@ app.get("/", (_, res: Response) => {
 })
 
 app.listen(ENV.PORT, async () => {
+    await DbConnection()
     console.log("Server is running on port: " + ENV.PORT)
 })
