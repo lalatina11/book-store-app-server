@@ -5,6 +5,7 @@ import AuthService from "../services/AuthServices.ts";
 import emailValidator from "email-validator"
 import UserServices from "../services/UserServices.ts";
 import UserRepository from "../repositories/UserRepository.ts";
+import user from "../db/models/User.ts";
 
 const UserController = {
     getCurrentUser: async (req: Request, res: Response,) => {
@@ -71,7 +72,10 @@ const UserController = {
     ,
     signIn: async (req: Request, res: Response,) => {
         try {
-            return res.status(200).json({error: false, message: "Successfully SignIn User"})
+            const {identifier, password} = req.body as UserFields & { identifier: string };
+            const user = await AuthService.checkCredentials({identifier, password})
+            const token = AuthService.generateToken(user._id.toString());
+            return res.status(200).json({error: false, data: {user, token}, message: "Successfully SignIn User"})
         } catch (err) {
             console.log(err)
             return res.status(400).json({error: true, message: (err as Error).message || "Something went wrong!"})
