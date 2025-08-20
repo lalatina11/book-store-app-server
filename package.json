@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch src",
-    "start": "bun src"
+    "start": "bun src",
+    "vercel-build": "echo hello"
   },
   "devDependencies": {
     "@types/bun": "latest"

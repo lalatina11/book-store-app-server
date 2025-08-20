@@ -31,3 +31,5 @@ app.listen(ENV.PORT, async () => {
     await DbConnection()
     console.log("Server is running on port: " + ENV.PORT)
 })
+
+export default app
